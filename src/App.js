@@ -1,36 +1,27 @@
-import { Alchemy, Network } from 'alchemy-sdk';
-import { useEffect, useState } from 'react';
+import BlockDetails from './components/BlockDetails';
+import Home from './components/Home';
+import Navbar from './components/Navbar';
+import Transactions from './components/Transactions'
+import AddressDetails from './components/AddressDetails';
+import TransactionDetails from './components/TransactionDetails';
 
-import './App.css';
-
-// Refer to the README doc for more information about using API
-// keys in client-side code. You should never do this in production
-// level code.
-const settings = {
-  apiKey: process.env.REACT_APP_ALCHEMY_API_KEY,
-  network: Network.ETH_MAINNET,
-};
-
-
-// In this week's lessons we used ethers.js. Here we are using the
-// Alchemy SDK is an umbrella library with several different packages.
-//
-// You can read more about the packages here:
-//   https://docs.alchemy.com/reference/alchemy-sdk-api-surface-overview#api-surface
-const alchemy = new Alchemy(settings);
+import { BrowserRouter, Switch, Route, Link } from 'react-router-dom';
 
 function App() {
-  const [blockNumber, setBlockNumber] = useState();
-
-  useEffect(() => {
-    async function getBlockNumber() {
-      setBlockNumber(await alchemy.core.getBlockNumber());
-    }
-
-    getBlockNumber();
-  });
-
-  return <div className="App">Block Number: {blockNumber}</div>;
+  return (
+    <BrowserRouter>
+      <Navbar />
+      <Switch>
+        <Route exact path="/" component={Home} />
+        <Route exact path="/block/:id" component={BlockDetails} />
+        <Route exact path="/block/:id/transactions" component={Transactions} />
+        <Route exact path="/address/:address" component={AddressDetails} />
+        <Route exact path="/transaction/:txnHash" component={TransactionDetails} />
+      </Switch>
+    </BrowserRouter>
+  );
 }
+
+
 
 export default App;
